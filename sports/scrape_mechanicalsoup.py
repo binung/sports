@@ -10,6 +10,7 @@ def extract_data_mechanicalsoup(page, data_items):
         thead = table.find('thead')
         if thead:
             headers = [th.text.strip() for th in thead.find_all(['td', 'th'])]
+            print(f"Headers found: {headers}")
             if headers: rows.append(headers)
 
         if table:
@@ -17,6 +18,7 @@ def extract_data_mechanicalsoup(page, data_items):
             if tbody:
                 for tr in tbody.find_all('tr'):
                     row = [td.text.strip() for td in tr.find_all(['td', 'th'])]
+                    print(f"Row found: {row}")
                     if row:
                         rows.append(row)
         data[item_name] = rows
@@ -35,6 +37,7 @@ def scrape_mechanicalsoup(website_key):
         browser.open(url)
         page = browser.get_current_page()
         data = extract_data_mechanicalsoup(page, website_info.get("data_items", {}))
+        print("Extracted data:", data)  # Debug output
         save_data_to_excel(data, website_key, 'mechanicalsoup')
         return True
     except Exception as e:
